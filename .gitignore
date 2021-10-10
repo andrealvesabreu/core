@@ -1,0 +1,7 @@
+config/*
+configure.php
+/vendor/
+/.settings/
+.buildpath
+.project
+composer.phar

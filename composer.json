@@ -1,0 +1,31 @@
+{
+	"autoload" : {
+		"psr-4" : {
+			"Inspire\\Core\\" : "src"
+		}
+	},
+	"name" : "inspire/core",
+	"type" : "library",
+	"description" : "Core to common PHP API",
+	"license" : "MIT",
+	"require" : {
+		"php" : ">=7.4",
+		"ext-json" : "*",
+		"neitanod/forceutf8" : "^2.0",
+		"nette/utils" : "~3.2",
+		"league/config" : "~1.1",
+		"voku/portable-ascii" : "~1.5",
+		"pwfisher/command-line-php" : "dev-master",
+		"illuminate/support" : ">=8.0.0"
+	},
+	"authors" : [{
+			"name" : "André Alves",
+			"email" : "aluisalves0@gmail.com",
+			"role" : "Developer"
+		}
+	],
+	"minimum-stability" : "dev",
+	"config" : {
+		"process-timeout" : 30
+	}
+}
