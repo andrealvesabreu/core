@@ -4,7 +4,7 @@
 			"Inspire\\Core\\" : "src"
 		}
 	},
-	"name" : "aalves/core",
+	"name" : "inspire/core",
 	"type" : "library",
 	"description" : "Core to common PHP API",
 	"license" : "MIT",
