@@ -30,7 +30,7 @@ class Config
         try {
             return self::getConfig()->get($item);
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
+            echo ($e->getMessage());
         }
     }
 
@@ -74,7 +74,6 @@ class Config
         $count = 0;
         $path = rtrim($path, DIRECTORY_SEPARATOR);
         if (file_exists($path) && is_dir($path) && is_readable($path)) {
-            print_r(glob("{$path}/*.php"));
             foreach (glob("{$path}/*.php") as $file) {
                 $data = require $file;
                 $count += self::addConfig($data);
@@ -345,10 +344,7 @@ class Config
                     ]
                 ];
             }
-            print_r($addData);
-            print_r($data);
-            print_r($schema);
-            $normalized = $processor->process($schema, $data);
+            $processor->process($schema, $data);
             self::getConfig()->merge($addData);
         } catch (\Nette\Schema\ValidationException $e) {
             echo 'Data is invalid: ' . $e->getMessage();
