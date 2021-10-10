@@ -46,8 +46,7 @@ class Config
                 if (! isset($data['type'])) {
                     echo "arquivo cagado\n";
                 }
-                $config = self::addSchema($data['type']);
-                $config->merge([
+                self::addSchema($data['type'])->merge([
                     $data['type'] => $data
                 ]);
                 $count ++;
@@ -56,8 +55,7 @@ class Config
                 if (! isset($imp['type'])) {
                     echo "arquivo cagado\n";
                 }
-                $config = self::addSchema($imp['type']);
-                $config->merge([
+                self::addSchema($imp['type'])->merge([
                     $imp['type'] => [
                         $idx => $imp
                     ]
@@ -80,6 +78,7 @@ class Config
         $count = 0;
         $path = rtrim($path, DIRECTORY_SEPARATOR);
         if (file_exists($path) && is_dir($path) && is_readable($path)) {
+            print_r(glob("{$path}/*.php"));
             foreach (glob("{$path}/*.php") as $file) {
                 $data = require $file;
                 $count += self::addConfig($data);
@@ -301,6 +300,58 @@ class Config
                             'ssl_key' => Expect::string()->nullable(),
                             'producer' => Expect::string()->nullable(),
                             'processor' => Expect::string()->nullable()
+                        ])
+                    ])
+                ]));
+                break;
+
+            case 'database':
+                self::getConfig()->addSchema('database', Expect::array([
+                    Expect::anyOf([
+                        Expect::structure([
+                            'type' => Expect::string()->required()
+                                ->default('database'),
+                            'driver' => Expect::string()->default('sqlsrv')
+                                ->required(),
+                            'host' => Expect::string()->default('localhost'),
+                            'port' => Expect::int()->min(1)
+                                ->max(65535)
+                                ->default(1433),
+                            'database' => Expect::string()->required(),
+                            'username' => Expect::string()->nullable(),
+                            'password' => Expect::string()->nullable()
+                        ]),
+                        Expect::structure([
+                            'type' => Expect::string()->required()
+                                ->default('database'),
+                            'driver' => Expect::string()->default('mysql')
+                                ->required(),
+                            'host' => Expect::string()->default('localhost'),
+                            'port' => Expect::int()->min(1)
+                                ->max(65535)
+                                ->default(3306),
+                            'database' => Expect::string()->required(),
+                            'username' => Expect::string()->nullable(),
+                            'password' => Expect::string()->nullable(),
+                            'charset' => Expect::string()->nullable(),
+                            'collation' => Expect::string()->nullable(),
+                            'prefix' => Expect::string()->nullable()
+                        ]),
+                        Expect::structure([
+                            'type' => Expect::string()->required()
+                                ->default('database'),
+                            'driver' => Expect::string()->default('pgsql')
+                                ->required(),
+                            'host' => Expect::string()->default('localhost'),
+                            'port' => Expect::int()->min(1)
+                                ->max(65535)
+                                ->default(5432),
+                            'database' => Expect::string()->required(),
+                            'username' => Expect::string()->nullable(),
+                            'password' => Expect::string()->nullable(),
+                            'charset' => Expect::string()->nullable(),
+                            'prefix' => Expect::string()->nullable(),
+                            'schema' => Expect::string()->nullable()
                         ])
                     ])
                 ]));

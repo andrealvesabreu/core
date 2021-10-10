@@ -4,7 +4,7 @@
 			"Inspire\\Core\\" : "src"
 		}
 	},
-	"name" : "inspire/core",
+	"name" : "aalves/core",
 	"type" : "library",
 	"description" : "Core to common PHP API",
 	"license" : "MIT",
@@ -24,8 +24,8 @@
 			"role" : "Developer"
 		}
 	],
-	"minimum-stability" : "dev",
 	"config" : {
-		"process-timeout" : 30
+		"process-timeout" : 30,
+        "sort-packages": true
 	}
 }
