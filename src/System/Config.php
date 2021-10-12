@@ -4,6 +4,8 @@ namespace Inspire\Core\System;
 
 use League\Config\Configuration;
 use Nette\Schema\Expect;
+use Psr\Log\LogLevel;
+use Nette\Schema\Processor;
 
 /**
  *
@@ -21,6 +23,12 @@ class Config
     protected static ?Configuration $config = null;
 
     /**
+     *
+     * @var Processor
+     */
+    private static ?Processor $processor = null;
+
+    /**
      * Get data from configuration
      *
      * @param string $item
@@ -30,7 +38,8 @@ class Config
         try {
             return self::getConfig()->get($item);
         } catch (\Exception $e) {
-            echo ($e->getMessage());
+            // echo ($e->getMessage() . "!!");
+            return null;
         }
     }
 
@@ -166,13 +175,16 @@ class Config
                 break;
             case 'log':
                 $schema = Expect::structure([
-                    'type' => Expect::string()->required()->default('log'),
-                    'path' => Expect::string()->required(),
-                    'name' => Expect::string()->required(),
-                    'format' => Expect::string()->required(),
+                    'type' => Expect::string('log')->required(),
+                    'level' => Expect::anyOf(LogLevel::ALERT, LogLevel::CRITICAL, LogLevel::DEBUG, LogLevel::EMERGENCY, LogLevel::ERROR, LogLevel::INFO, LogLevel::NOTICE, LogLevel::WARNING)->required(),
+                    'filename' => Expect::string()->required(),
+                    'format' => Expect::string()->nullable(),
                     'date_format' => Expect::string()->required(),
-                    'expire' => Expect::int()->min(1)
+                    'max_files' => Expect::int()->min(1)
                         ->max(30)
+                        ->required(),
+                    'file_perms' => Expect::int()->min(0)
+                        ->max(777)
                         ->required()
                 ]);
                 self::getConfig()->addSchema('log', Expect::array([
@@ -331,7 +343,9 @@ class Config
                 ]));
                 break;
         }
-        $processor = new \Nette\Schema\Processor();
+        if (self::$processor === null) {
+            self::$processor = new \Nette\Schema\Processor();
+        }
         try {
             if ($name === null) {
                 $addData = [
@@ -344,7 +358,7 @@ class Config
                     ]
                 ];
             }
-            $processor->process($schema, $data);
+            self::$processor->process($schema, $data);
             self::getConfig()->merge($addData);
         } catch (\Nette\Schema\ValidationException $e) {
             echo 'Data is invalid: ' . $e->getMessage();

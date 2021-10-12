@@ -16,7 +16,8 @@
 		"league/config" : "~1.1",
 		"voku/portable-ascii" : "~1.5",
 		"pwfisher/command-line-php" : "dev-master",
-		"illuminate/support" : ">=8.0.0"
+		"illuminate/support" : "8.63.0",
+		"monolog/monolog" : "~2.3"
 	},
 	"authors" : [{
 			"name" : "André Alves",
@@ -26,6 +27,6 @@
 	],
 	"config" : {
 		"process-timeout" : 30,
-        "sort-packages": true
+		"sort-packages" : true
 	}
 }
