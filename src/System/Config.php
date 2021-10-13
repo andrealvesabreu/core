@@ -3,9 +3,11 @@ declare(strict_types = 1);
 namespace Inspire\Core\System;
 
 use League\Config\Configuration;
-use Nette\Schema\Expect;
+use Nette\Schema\ {
+    Expect,
+    Processor
+};
 use Psr\Log\LogLevel;
-use Nette\Schema\Processor;
 
 /**
  *
@@ -177,6 +179,7 @@ class Config
                 $schema = Expect::structure([
                     'type' => Expect::string('log')->required(),
                     'level' => Expect::anyOf(LogLevel::ALERT, LogLevel::CRITICAL, LogLevel::DEBUG, LogLevel::EMERGENCY, LogLevel::ERROR, LogLevel::INFO, LogLevel::NOTICE, LogLevel::WARNING)->required(),
+                    'channel' => Expect::string()->nullable(),
                     'filename' => Expect::string()->required(),
                     'format' => Expect::string()->nullable(),
                     'date_format' => Expect::string()->required(),

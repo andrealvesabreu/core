@@ -2,124 +2,62 @@
 declare(strict_types = 1);
 namespace Inspire\Core\Logger;
 
-use Psr\Log\LogLevel;
-use Monolog\Logger;
-use Inspire\Core\Factories\FactoryLogger;
-
 /**
- * Description of Arrays
+ * Description of Log
  *
  * @author aalves
  */
-class Log
+abstract class Log
 {
 
     /**
-     * Collection of Logger objects
+     * Collection of Log objects
      *
      * @var array
      */
-    private static $logStream = [];
+    public static array $logChannels = [];
 
     /**
-     * Get Logger by its name
+     * Call private function statically.It will work only for default channel
      *
-     * @param string $level
-     * @return Logger|NULL
+     * @param string $method
+     * @param array $arguments
      */
-    public static function getLogStream(string $level): ?Logger
+    public static function __callstatic(string $method, array $arguments)
     {
-        return self::$logStream[$level] ?? null;
-    }
-
-    /**
-     * Set log level INFO
-     */
-    public static function info()
-    {
-        self::setLog(LogLevel::INFO, func_get_args());
-    }
-
-    /**
-     * Set log level DEBUG
-     */
-    public static function debug(): void
-    {
-        self::setLog(LogLevel::DEBUG, func_get_args());
-    }
-
-    /**
-     * Set log level CRITICAL
-     */
-    public static function critical(): void
-    {
-        self::setLog(LogLevel::CRITICAL, func_get_args());
-    }
-
-    /**
-     * Set log level ALERT
-     */
-    public static function alert(): void
-    {
-        self::setLog(LogLevel::ALERT, func_get_args());
-    }
-
-    /**
-     * Set log level LOG
-     */
-    public static function log(): void
-    {
-        self::setLog(LogLevel::LOG, func_get_args());
-    }
-
-    /**
-     * Set log level EMERGENCY
-     */
-    public static function emergency(): void
-    {
-        self::setLog(LogLevel::EMERGENCY, func_get_args());
-    }
-
-    /**
-     * Set log level WARNING
-     */
-    public static function warning(): void
-    {
-        self::setLog(LogLevel::WARNING, func_get_args());
-    }
-
-    /**
-     * Set log level ERROR
-     */
-    public static function error(): void
-    {
-        self::setLog(LogLevel::ERROR, func_get_args());
-    }
-
-    /**
-     * Set log level NOTICE
-     */
-    public static function notice(): void
-    {
-        self::setLog(LogLevel::NOTICE, func_get_args());
-    }
-
-    /**
-     * Set all logs
-     */
-    private static function setLog(string $level, array $messages)
-    {
-        if (! self::getLogStream($level)) {
-            if (($logger = FactoryLogger::create($level)) !== null) {
-                self::$logStream[$level] = $logger;
-            } else {
-                var_dump("ERROR");
-                return;
-            }
+        /**
+         * If channel default isn't initialized yet
+         */
+        if (! isset(self::$logChannels['default'])) {
+            self::$logChannels['default'] = new Logger('default');
         }
-        foreach ($messages as $message) {
-            self::$logStream[$level]->$level($message);
+        call_user_func_array([
+            self::$logChannels['default'],
+            $method
+        ], $arguments);
+        /**
+         * Return Log object
+         */
+        return self::$logChannels['default'];
+    }
+
+    /**
+     * Set a channel before call its methods
+     *
+     * @param string $channel
+     */
+    public static function on(string $channel)
+    {
+        /**
+         * If channel default isn't initialized yet
+         */
+        if (! isset(self::$logChannels[$channel])) {
+            self::$logChannels[$channel] = new Logger($channel);
         }
+        /**
+         * Return Log object
+         */
+        return self::$logChannels[$channel];
     }
 }
 

@@ -4,15 +4,15 @@ namespace Inspire\Core\Factories;
 
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
-use Inspire\Core\Logger\Log;
 use Monolog\Handler\RotatingFileHandler;
+use Inspire\Core\Logger\Log;
 
 /**
- * Description of FactoryLogger
+ * Description of Arrays
  *
  * @author aalves
  */
-class FactoryLogger
+final class FactoryLogger
 {
 
     /**
@@ -21,13 +21,26 @@ class FactoryLogger
      * @param string $level
      * @return Logger|null
      */
-    public static function create(string $level): ?Logger
+    public static function create(string $level, ?string $channel = null): ?Logger
     {
-        if (($logger = Log::getLogStream($level)) !== null) {
-            return $logger;
-        }
+        // if (($logger = Log::getLogStream($level, $channel)) !== null) {
+        // return $logger;
+        // }
         if (($logs = \Inspire\Core\System\Config::get("log")) !== null) {
             array_shift($logs);
+            /**
+             * Filter only configuratons applyable to this channel
+             */
+            $channel = $channel === 'default' ? null : $channel;
+            if ($channel === null) {
+                $logs = array_filter($logs, function ($item) {
+                    return ! isset($item['channel']) || $item['channel'] === null || $item['channel'] === 'default';
+                });
+            } else {
+                $logs = array_filter($logs, function ($item) use ($channel) {
+                    return isset($item['channel']) && $item['channel'] == $channel;
+                });
+            }
             $index = array_search($level, array_column($logs, 'level'));
             if ($index !== false) {
                 $settings = array_values($logs);

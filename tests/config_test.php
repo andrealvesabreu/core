@@ -1,6 +1,7 @@
 <?php
 use Inspire\Core\Logger\Log;
 use Psr\Log\LogLevel;
+use Inspire\Core\Factories\FactoryLogger;
 
 define('APP_NAME', 'test');
 include dirname(__DIR__) . '/vendor/autoload.php';
@@ -18,8 +19,10 @@ var_dump(Inspire\Core\System\Config::get('queue.teste.database'));
 var_dump(Inspire\Core\System\Config::get('queue.amqp.dsn'));
 var_dump(Inspire\Core\System\Config::get('database.mysql.collation'));
 var_dump(Inspire\Core\System\Config::get('database.sqlsrv.username'));
+// FactoryLogger::create('info', APP_NAME);
 Log::info("Test info");
-Log::error("Test error");
-Log::warning("Test warning");
+Log::on(APP_NAME)->info("Test info channel " . APP_NAME);
+Log::on(APP_NAME)->info('Test', 'multi', 'info', 'channel', APP_NAME)->error('multi', 'error', 'too');
+// Log::warning("Test warning");
 
 
