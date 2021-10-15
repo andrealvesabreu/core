@@ -1,8 +1,9 @@
 <?php
+declare(strict_types = 1);
 namespace Inspire\Core\Logger;
 
 use Psr\Log\LogLevel;
-use Inspire\Core\Factories\FactoryLogger;
+use Inspire\Core\Factories\LoggerFactory;
 
 /**
  *
@@ -118,7 +119,7 @@ final class Logger
     private function setLog(string $level, array $messages)
     {
         if (! isset($this->logStreams[$level])) {
-            if (($logger = FactoryLogger::create($level, $this->channel)) !== null) {
+            if (($logger = LoggerFactory::create($level, $this->channel)) !== null) {
                 $this->logStreams[$level] = $logger;
             } else {
                 return;

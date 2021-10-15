@@ -270,18 +270,43 @@ class Config
                     'type' => Expect::string()->required()->default('queue'),
                     'driver' => Expect::anyOf('rabbit')->required(),
                     'host' => Expect::string()->default('localhost')->required(),
-                    'vhost' => Expect::string()->default('localhost'),
+                    'vhost' => Expect::string('/')->default('localhost'),
                     'port' => Expect::int()->min(1)
                         ->max(65535)
-                        ->default(6379),
-                    'pass' => Expect::string()->nullable(),
+                        ->default(5672),
+                    'user' => Expect::string('guest')->nullable(),
+                    'pass' => Expect::string('guest')->nullable(),
+                    'read_timeout' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(3),
+                    'write_timeout' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(3),
+                    'connection_timeout' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(3),
+                    'heartbeat' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(0),
                     'persisted' => Expect::bool()->default(true)->required(),
-                    'dsn' => Expect::string()->required(),
+                    'lazy' => Expect::bool()->default(true),
+                    'qos_global' => Expect::bool()->default(false),
+                    'qos_prefetch_size' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(0),
+                    'qos_prefetch_count' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(1),
+                    'exchange' => Expect::string()->required(),
+                    'queue_type' => Expect::anyOf('direct', 'fanout', 'headers', 'topic')->required(),
+                    'ssl_on' => Expect::bool()->default(false),
+                    'ssl_verify' => Expect::bool()->default(true),
                     'ssl_cacert' => Expect::string()->nullable(),
                     'ssl_cert' => Expect::string()->nullable(),
                     'ssl_key' => Expect::string()->nullable(),
-                    'producer' => Expect::string()->nullable(),
-                    'processor' => Expect::string()->nullable()
+                    'ssl_passphrase' => Expect::string()->nullable(),
+                    'producer' => Expect::string()->required(),
+                    'processor' => Expect::string()->required()
                 ]), Expect::structure([
                     'type' => Expect::string()->required()->default('queue'),
                     'driver' => Expect::anyOf('redis')->required(),
@@ -289,6 +314,7 @@ class Config
                     'port' => Expect::int()->min(1)
                         ->max(65535)
                         ->default(6379),
+                    'user' => Expect::string('guest')->nullable(),
                     'pass' => Expect::string()->nullable(),
                     'database' => Expect::int()->min(1)
                         ->max(16)
@@ -296,8 +322,8 @@ class Config
                     'ttl' => Expect::int()->min(30)
                         ->max(604800)
                         ->nullable(),
-                    'producer' => Expect::string()->nullable(),
-                    'processor' => Expect::string()->nullable()
+                    'producer' => Expect::string()->required(),
+                    'processor' => Expect::string()->required()
                 ]));
                 self::getConfig()->addSchema('queue', Expect::array([
                     $schema

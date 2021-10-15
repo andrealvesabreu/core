@@ -20,10 +20,11 @@ return [
         'driver' => 'rabbit',
         'host' => 'localhost',
         'vhost' => 'brd',
-        'port' => 6379,
+        'port' => 5672,
         'pass' => '',
+        'exchange' => 'test.amqp',
+        'queue_type' => 'topic',
         'persisted' => false,
-        'dsn' => 'amps:',
         'producer' => 'Brudam',
         'processor' => 'Brudam'
     ]

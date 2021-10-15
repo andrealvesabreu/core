@@ -5,14 +5,13 @@ namespace Inspire\Core\Factories;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
-use Inspire\Core\Logger\Log;
 
 /**
- * Description of Arrays
+ * Description of LoggerFactory
  *
  * @author aalves
  */
-final class FactoryLogger
+final class LoggerFactory
 {
 
     /**
