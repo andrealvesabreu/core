@@ -22,9 +22,6 @@ final class LoggerFactory
      */
     public static function create(string $level, ?string $channel = null): ?Logger
     {
-        // if (($logger = Log::getLogStream($level, $channel)) !== null) {
-        // return $logger;
-        // }
         if (($logs = \Inspire\Core\System\Config::get("log")) !== null) {
             array_shift($logs);
             /**

@@ -323,7 +323,8 @@ class Config
                         ->max(604800)
                         ->nullable(),
                     'producer' => Expect::string()->required(),
-                    'processor' => Expect::string()->required()
+                    'processor' => Expect::string()->required(),
+                    'queues' => Expect::array()->nullable()
                 ]));
                 self::getConfig()->addSchema('queue', Expect::array([
                     $schema
