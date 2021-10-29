@@ -2,6 +2,7 @@
 use Inspire\Core\Logger\Log;
 use Psr\Log\LogLevel;
 use Inspire\Core\Factories\FactoryLogger;
+use Inspire\Core\Cache\Cache;
 
 define('APP_NAME', 'test');
 include dirname(__DIR__) . '/vendor/autoload.php';
@@ -25,4 +26,6 @@ Log::on(APP_NAME)->info("Test info channel " . APP_NAME);
 Log::on(APP_NAME)->info('Test', 'multi', 'info', 'channel', APP_NAME)->error('multi', 'error', 'too');
 // Log::warning("Test warning");
 
+Cache::on('cache6')->set('deco', '123456', 60);
+echo Cache::on('cache6')->get('deco') . PHP_EOL;
 
