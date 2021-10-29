@@ -16,8 +16,19 @@ class CustomMessage extends DefaultMessage implements MessageInterface, \Seriali
     public function serialize($data)
     {}
 
-    public function unserialize($data)
+    public function unserialize(string $data)
     {}
+
+    /**
+     * Get all data
+     *
+     * {@inheritdoc}
+     * @see \Inspire\Core\Message\MessageInterface::getData()
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
 
     public function set(string $field, string $value)
     {}

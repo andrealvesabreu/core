@@ -18,7 +18,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      *
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct($data)
     {
         $this->data = $data;
     }
@@ -40,9 +40,9 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Core\Message\MessageInterface::unserialize()
      */
-    public function unserialize(): ?string
+    public function unserialize(string $data)
     {
-        $this->data = unserialize($this->data);
+        $this->data = unserialize($data);
     }
 
     /**

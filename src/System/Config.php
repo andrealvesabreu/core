@@ -305,7 +305,6 @@ class Config
                     'ssl_cert' => Expect::string()->nullable(),
                     'ssl_key' => Expect::string()->nullable(),
                     'ssl_passphrase' => Expect::string()->nullable(),
-                    'producer' => Expect::string()->required(),
                     'processor' => Expect::string()->required()
                 ]), Expect::structure([
                     'type' => Expect::string()->required()->default('queue'),
@@ -314,17 +313,19 @@ class Config
                     'port' => Expect::int()->min(1)
                         ->max(65535)
                         ->default(6379),
-                    'user' => Expect::string('guest')->nullable(),
+                    'user' => Expect::string()->nullable(),
                     'pass' => Expect::string()->nullable(),
+                    'persisted' => Expect::bool()->default(true)->required(),
                     'database' => Expect::int()->min(1)
                         ->max(16)
-                        ->nullable(),
-                    'ttl' => Expect::int()->min(30)
-                        ->max(604800)
-                        ->nullable(),
-                    'producer' => Expect::string()->required(),
-                    'processor' => Expect::string()->required(),
-                    'queues' => Expect::array()->nullable()
+                        ->required(),
+                    'read_timeout' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(3),
+                    'connection_timeout' => Expect::int()->min(1)
+                        ->max(30)
+                        ->default(3),
+                    'processor' => Expect::string()->required()
                 ]));
                 self::getConfig()->addSchema('queue', Expect::array([
                     $schema

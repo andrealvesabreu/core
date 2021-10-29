@@ -14,7 +14,7 @@ interface MessageInterface
 
     public function serialize(): ?string;
 
-    public function unserialize(): ?string;
+    public function unserialize(string $data);
 
     public function getData();
 

@@ -15,15 +15,15 @@ return [
         'producer' => 'Brudam',
         'processor' => 'Brudam'
     ],
-    'amqp' => [
+    'track' => [
         'type' => 'queue',
         'driver' => 'rabbit',
-        'host' => 'localhost',
-        'vhost' => 'brd',
-        'port' => 5672,
+        'host' => 'b-3809e3d1-ec72-4283-aa16-cdfcd2b78848.mq.us-east-1.amazonaws.com',
+        'vhost' => 'services',
+        'port' => 5671,
         'pass' => '',
-        'exchange' => 'test.amqp',
-        'queue_type' => 'topic',
+        'exchange' => 'tracking',
+        'queue_type' => 'direct',
         'persisted' => false,
         'producer' => 'Brudam',
         'processor' => 'Brudam'

@@ -27,9 +27,9 @@ class JsonMessage extends ArrayMessage implements MessageInterface
      * {@inheritdoc}
      * @see \Inspire\Core\Message\MessageInterface::unserialize()
      */
-    public function unserialize(): ?string
+    public function unserialize(string $data)
     {
-        $this->data = json_decode($this->data, true);
+        $this->data = json_decode($data, true);
     }
 }
 
