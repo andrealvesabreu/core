@@ -125,7 +125,13 @@ class Config
         return self::$config;
     }
 
-    private static function addSchema(array $data, string $name = null)
+    /**
+     *
+     * @param array $data
+     * @param string $name
+     * @return Configuration|NULL
+     */
+    private static function addSchema(array $data, string $name = null): ?Configuration
     {
         switch ($data['type']) {
             case 'jwt':
