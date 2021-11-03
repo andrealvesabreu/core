@@ -12,15 +12,15 @@
 		"php" : ">=7.4",
 		"ext-json" : "*",
 		"neitanod/forceutf8" : "^2.0",
-		"nette/utils" : "~3.2",
-		"league/config" : "~1.1",
 		"voku/portable-ascii" : "~1.5",
 		"pwfisher/command-line-php" : "dev-master",
 		"illuminate/support" : "8.63.0",
 		"monolog/monolog" : "~2.3",
 		"cache/redis-adapter" : "1.1.0",
 		"cache/array-adapter" : "~1.1",
-		"cache/memcached-adapter" : "~1.1"
+		"cache/memcached-adapter" : "~1.1",
+		"opis/json-schema" : "2.2.0",
+		"nette/utils" : "~3.2"
 	},
 	"authors" : [{
 			"name" : "André Alves",
