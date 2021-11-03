@@ -127,30 +127,6 @@ class JsonValidator
         $formatter = new ErrorFormatter();
 
         $custom = function (ValidationError $error) use ($formatter) {
-            // $schema = $error->schema()->info();
-            // print_r([
-            // 'schema' => [
-            // 'id' => $schema->id(),
-            // 'base' => $schema->base(),
-            // 'root' => $schema->root(),
-            // 'draft' => $schema->draft(),
-            // 'path' => JsonPointer::pathToFragment($schema->path()),
-            // 'contents' => $schema->data()
-            // // see Opis\JsonSchema\Info\SchemaInfo for more properties
-            // ],
-            // 'error' => [
-            // 'keyword' => $error->keyword(),
-            // 'args' => $error->args(),
-            // 'message' => $error->message(),
-            // 'formattedMessage' => $formatter->formatErrorMessage($error)
-            // ],
-            // 'data' => [
-            // 'type' => $error->data()->type(),
-            // 'value' => $error->data()->value(),
-            // 'fullPath' => $error->data()->fullPath()
-            // // see Opis\JsonSchema\Info\DataInfo for more properties
-            // ]
-            // ]);
             switch ($error->keyword()) {
                 /**
                  * Array limitations
@@ -218,7 +194,7 @@ class JsonValidator
                  */
                 case 'required':
                     return str_replace('?', //
-                    implode('->', $error->data()->fullPath()) . '->' . implode('->', $error->args()['missing']), //
+                    ltrim(implode('->', $error->data()->fullPath()) . '->' . implode('->', $error->args()['missing']), '->'), //
                     self::$readable_messages[self::$lang]['required']);
                 /**
                  * Type errors
