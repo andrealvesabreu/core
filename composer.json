@@ -14,7 +14,6 @@
 		"ext-json" : "*",
 		"neitanod/forceutf8" : "^2.0",
 		"voku/portable-ascii" : "~1.5",
-		"pwfisher/command-line-php" : "dev-master",
 		"illuminate/support" : "8.63.0",
 		"monolog/monolog" : "~2.3",
 		"cache/redis-adapter" : "1.1.0",
