@@ -13,13 +13,13 @@
 		"ext-json" : "*",
 		"neitanod/forceutf8" : "^2.0",
 		"voku/portable-ascii" : "~1.5",
-		"illuminate/support" : "8.63.0",
+		"illuminate/support" : "8.70.2",
 		"monolog/monolog" : "~2.3",
-		"cache/redis-adapter" : "1.1.0",
+		"cache/redis-adapter" : "~1.1",
 		"cache/array-adapter" : "~1.1",
 		"cache/memcached-adapter" : "~1.1",
-		"opis/json-schema" : "2.2.0",
-		"nette/utils" : "~3.2"
+		"opis/json-schema" : "~2.2",
+		"nette/utils" : "^3.2"
 	},
 	"authors" : [{
 			"name" : "André Alves",
