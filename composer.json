@@ -5,6 +5,7 @@
 		}
 	},
 	"name" : "inspire/core",
+	"version" : "0.10",
 	"type" : "library",
 	"description" : "Core to common PHP API",
 	"license" : "MIT",
