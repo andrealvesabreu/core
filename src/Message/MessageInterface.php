@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Inspire\Core\Message;
 
 /**
- * Description of LoggerFactory
+ * Description of MessageInterface
  *
  * @author aalves
  */
@@ -14,7 +14,7 @@ interface MessageInterface
 
     public function serialize(): ?string;
 
-    public function unserialize(string $data);
+    public function unserialize($data);
 
     public function getData();
 

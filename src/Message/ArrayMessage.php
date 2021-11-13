@@ -40,7 +40,7 @@ class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializ
      * {@inheritdoc}
      * @see \Inspire\Core\Message\MessageInterface::unserialize()
      */
-    public function unserialize(string $data)
+    public function unserialize($data)
     {
         $this->data = unserialize($data);
     }
