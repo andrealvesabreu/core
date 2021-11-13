@@ -19,7 +19,8 @@
 		"cache/array-adapter" : "~1.1",
 		"cache/memcached-adapter" : "~1.1",
 		"opis/json-schema" : "~2.2",
-		"nette/utils" : "^3.2"
+		"nette/utils" : "^3.2",
+		"phpseclib/phpseclib" : "~3.0"
 	},
 	"authors" : [{
 			"name" : "André Alves",
