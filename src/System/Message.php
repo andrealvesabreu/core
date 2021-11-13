@@ -51,28 +51,35 @@ abstract class Message
      *
      * @var int
      */
-    protected $code = Message::OK;
+    protected int $code = Message::MSG_OK;
 
     /**
      * Message type
      *
      * @var int
      */
-    protected $type = null;
+    protected ?int $type = null;
 
     /**
      * Message text
      *
-     * @var string
+     * @var string|null
      */
-    protected $message = null;
+    protected ?string $message = null;
 
     /**
      * Code tranliterable for system
      *
-     * @var string
+     * @var string|null
      */
-    protected $systemCode = null;
+    protected ?string $systemCode = null;
+
+    /**
+     * Code tranliterable for system
+     *
+     * @var bool|null
+     */
+    protected ?bool $status = null;
 
     /**
      *
@@ -103,7 +110,8 @@ abstract class Message
         return [
             'code' => $message->code,
             'message' => $message->message,
-            'sys_code' => $message->systemCode
+            'sys_code' => $message->systemCode,
+            'status' => $message->status
         ];
     }
 
@@ -145,6 +153,16 @@ abstract class Message
     public function getTxt(): ?string
     {
         return $this->message;
+    }
+
+    /**
+     * Get message status
+     *
+     * @return bool|null
+     */
+    public function status(): ?bool
+    {
+        return $this->status;
     }
 }
 

@@ -16,13 +16,19 @@ class SystemMessage extends Message
      * @param string $message
      * @param string $systemCode
      * @param int $code
+     * @param bool $status
      */
-    public function __construct(string $message, string $systemCode, int $code = Message::MSG_OK)
+    public function __construct(string $message, string $systemCode, int $code = Message::MSG_OK, ?bool $status = null)
     {
         $this->message = $message;
         $this->systemCode = $systemCode;
         $this->code = $code;
         $this->type = Message::TYPE_SYSTEM;
+        if ($status !== null) {
+            $this->status = $status;
+        } else {
+            $this->status = $code == Message::MSG_OK;
+        }
     }
 
     // public function __construct(string $message, string $systemCode, int $code = Message::OK)
