@@ -15,14 +15,14 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      *
      * @var \SimpleXMLElement|null
      */
-    protected static ?\SimpleXMLElement $xml = null;
+    protected ?\SimpleXMLElement $xml = null;
 
     /**
      * Store the XML representation string
      *
      * @var string|null
      */
-    protected static ?string $stringXml = null;
+    protected ?string $stringXml = null;
 
     /**
      * Return constents serialized as JSON
@@ -43,8 +43,8 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      */
     public function unserialize($data)
     {
-        if (XmlMessage::load($data)) {
-            $this->data = XmlMessage::$xml;
+        if ($this->load($data)) {
+            $this->data = $this->xml;
         } else {
             $this->data = null;
         }
@@ -58,7 +58,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      */
     public function getData()
     {
-        return XmlMessage::$stringXml;
+        return $this->stringXml;
     }
 
     /**
@@ -69,7 +69,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      */
     public function get(string $field, ?string $default = null)
     {
-        return XmlMessage::xpath(str_replace('.', '/', $field)) ?? $default;
+        return $this->xpath(str_replace('.', '/', $field)) ?? $default;
     }
 
     /**
@@ -82,7 +82,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * @throws \Exception
      * @return bool
      */
-    public static function load(string $xml, string $sxclass = 'SimpleXMLElement', bool $nsattr = false, $flags = null): bool
+    public function load(string $xml, string $sxclass = 'SimpleXMLElement', bool $nsattr = false, $flags = null): bool
     {
         $xml = trim($xml);
         /**
@@ -133,7 +133,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
         if (! empty($errors)) {
             throw new \Exception("{$xml} is not a valid XML.");
         }
-        self::$xml = $output;
+        $this->xml = $output;
         return true;
     }
 
@@ -144,16 +144,16 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * @param int $index
      * @return NULL|array
      */
-    public static function xpath(string $xpath, ?int $index = null)
+    public function xpath(string $xpath, ?int $index = null)
     {
-        if (self::$xml === null) {
+        if ($this->xml === null) {
             throw new \Exception("You must load a XML before get its values.");
         }
         $out = [];
         if ($index !== null) {
             $out = null;
         }
-        $result = self::$xml->xpath("/{$xpath}");
+        $result = $this->xml->xpath("/{$xpath}");
         if ($result && ! empty($result)) {
             if ($index !== null) {
                 if (isset($result[$index])) {
@@ -172,4 +172,3 @@ class XmlMessage extends ArrayMessage implements MessageInterface
         return $out;
     }
 }
-
