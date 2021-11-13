@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Inspire\Core\Message;
 
 /**
- * Description of LoggerFactory
+ * Description of JsonMessage
  *
  * @author aalves
  */

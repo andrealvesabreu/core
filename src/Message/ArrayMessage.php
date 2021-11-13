@@ -12,7 +12,7 @@ use Inspire\Core\Utils\Arrays;
 class ArrayMessage extends DefaultMessage implements MessageInterface, \Serializable
 {
 
-    protected array $data = [];
+    protected $data = [];
 
     /**
      *
