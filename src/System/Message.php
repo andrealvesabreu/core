@@ -160,7 +160,7 @@ abstract class Message
      *
      * @return bool|null
      */
-    public function status(): ?bool
+    public function ok(): ?bool
     {
         return $this->status;
     }
