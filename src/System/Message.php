@@ -82,6 +82,13 @@ abstract class Message
     protected ?bool $status = null;
 
     /**
+     * Extra data
+     *
+     * @var array|NULL
+     */
+    protected ?array $extra = null;
+
+    /**
      *
      * @return Message|array|\RuntimeException
      */
@@ -111,7 +118,8 @@ abstract class Message
             'code' => $message->code,
             'message' => $message->message,
             'sys_code' => $message->systemCode,
-            'status' => $message->status
+            'status' => $message->status,
+            'extra' => $message->extra ?? null
         ];
     }
 
@@ -153,6 +161,26 @@ abstract class Message
     public function __toString(): ?string
     {
         return $this->message;
+    }
+
+    /**
+     * Get extra data
+     *
+     * @return array|NULL
+     */
+    public function getExtra(): ?array
+    {
+        return $this->extra;
+    }
+
+    /**
+     * Set extra data
+     *
+     * @param array $extra
+     */
+    public function setExtra(array $extra)
+    {
+        $this->extra = $extra;
     }
 
     /**
