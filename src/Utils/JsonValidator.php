@@ -8,9 +8,9 @@ use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\JsonPointer;
 
 /**
+ * Description of JsonValidator
  *
  * @author aalves
- *        
  */
 class JsonValidator
 {

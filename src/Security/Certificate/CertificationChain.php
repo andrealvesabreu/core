@@ -162,7 +162,7 @@ class CertificationChain
     {
         $this->rawKey = '';
         foreach ($this->chainKeys as $publickey) {
-            $this->rawKey .= "{$publickey}";
+            $this->rawKey .= $publickey;
         }
     }
 }

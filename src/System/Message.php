@@ -3,9 +3,9 @@ declare(strict_types = 1);
 namespace Inspire\Core\System;
 
 /**
+ * Description of Message
  *
  * @author aalves
- *        
  */
 abstract class Message
 {
@@ -150,7 +150,7 @@ abstract class Message
      *
      * @return string|NULL
      */
-    public function getTxt(): ?string
+    public function __toString(): ?string
     {
         return $this->message;
     }
@@ -160,7 +160,7 @@ abstract class Message
      *
      * @return bool|null
      */
-    public function ok(): ?bool
+    public function isOk(): ?bool
     {
         return $this->status;
     }

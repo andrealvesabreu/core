@@ -30,26 +30,5 @@ class SystemMessage extends Message
             $this->status = $code == Message::MSG_OK;
         }
     }
-
-    // public function __construct(string $message, string $systemCode, int $code = Message::OK)
-    // {
-    // $this->message = $message;
-    // $this->systemCode = $systemCode;
-    // $this->code = $code;
-    // }
-
-    // /**
-    // * Return core message like a SystemMessage
-    // *
-    // * @param Message $message
-    // * @param bool $asArray
-    // */
-    // protected static function get(Message $message, bool $asArray)
-    // {
-    // if ($asArray) {
-    // return parent::get();
-    // }
-    // return new static($message);
-    // }
 }
 
