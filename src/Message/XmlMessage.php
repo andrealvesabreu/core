@@ -82,14 +82,14 @@ class XmlMessage extends ArrayMessage implements MessageInterface
      * @throws \Exception
      * @return bool
      */
-    public function load(string $xml, string $sxclass = 'SimpleXMLElement', bool $nsattr = false, $flags = null): bool
+    public function load(string $xml, string $sxclass = '\SimpleXMLElement', bool $nsattr = false, $flags = null): bool
     {
         $xml = trim($xml);
         /**
          * Validating arguments
          */
         // Class to map
-        if (empty($sxclass) || ! is_string($sxclass) || ! class_exists($sxclass) || ! is_subclass_of($sxclass, 'SimpleXMLElement')) {
+        if (empty($sxclass) || ! is_string($sxclass) || ! class_exists($sxclass)) {
             throw new \Exception("{$sxclass} must be a SimpleXMLElement or a derived class.");
         }
         // Input XML
@@ -102,7 +102,7 @@ class XmlMessage extends ArrayMessage implements MessageInterface
         }
         // Let's drop namespace definitions
         if (stripos($xml, 'xmlns=') !== false) {
-            $xml = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', null, $xml);
+            $xml = preg_replace('~[\s]+xmlns=[\'"].+?[\'"]~i', '', $xml);
         }
         // Change namespaced attributes
         $matches = [];
@@ -116,9 +116,9 @@ class XmlMessage extends ArrayMessage implements MessageInterface
             }
         }
         // Let's change <namespace:tag to <namespace_tag ns="namespace"
-        $regexfrom = sprintf('~<([a-z0-9]+):%s~is', ! empty($nsattr) ? '([a-z0-9]+)' : null);
-        $regexto = strlen($nsattr) ? '<$1_$2 ' . $nsattr . '="$1"' : '<$1_';
-        $xml = preg_replace($regexfrom, $regexto, $xml);
+        $regexfrom = sprintf('~<([a-z0-9]+):%s~is', null);
+        // $regexto = strlen($nsattr) ? '<$1_$2 ' . $nsattr . '="$1"' : '<$1_';
+        $xml = preg_replace($regexfrom, '', $xml);
         // Let's change </namespace:tag> to </namespace_tag>
         $xml = preg_replace('~</([a-z0-9]+):~is', '</$1_', $xml);
         // Default flags to use
