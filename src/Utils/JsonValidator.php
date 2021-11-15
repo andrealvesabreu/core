@@ -3,9 +3,12 @@ declare(strict_types = 1);
 namespace Inspire\Core\Utils;
 
 use Exception;
-use Opis\JsonSchema\Errors\ValidationError;
-use Opis\JsonSchema\Errors\ErrorFormatter;
-use Opis\JsonSchema\JsonPointer;
+use Opis\JsonSchema\Errors\ {
+    ValidationError,
+    ErrorFormatter
+};
+use Opis\JsonSchema\Resolvers\SchemaResolver;
+use Opis\JsonSchema\SchemaLoader;
 
 /**
  * Description of JsonValidator
@@ -15,7 +18,26 @@ use Opis\JsonSchema\JsonPointer;
 class JsonValidator
 {
 
+    /**
+     * Language to use on messages
+     *
+     * @var string
+     */
     private static string $lang = \Inspire\Core\System\Language::EN_US;
+
+    /**
+     * Loader for related schemas
+     *
+     * @var SchemaLoader|null
+     */
+    private static ?SchemaLoader $loader = null;
+
+    /**
+     * Schema resolver for schemas loaded
+     *
+     * @var SchemaResolver|null
+     */
+    private static ?SchemaResolver $resolver = null;
 
     /**
      *
@@ -106,7 +128,7 @@ class JsonValidator
     }
 
     /**
-     * Verify if errors data are filled
+     * Check if errors data are filled
      *
      * @return bool
      */
@@ -272,6 +294,70 @@ class JsonValidator
     public static function getErrors(): ?array
     {
         return is_array(self::$errors) && ! empty(self::$errors) ? self::$errors : null;
+    }
+
+    /**
+     * Get current language from error reporting
+     *
+     * @return string
+     */
+    public static function getLanguage()
+    {
+        return self::$lang;
+    }
+
+    /**
+     * Set language for error reporting
+     *
+     * @param string $lang
+     * @throws \Exception
+     */
+    public static function setLanguage(string $lang)
+    {
+        if ($lang != \Inspire\Core\System\Language::PT_BR && $lang != \Inspire\Core\System\Language::EN_US) {
+            throw new \Exception("There are only two languages available for JsonValidator: " . \Inspire\Core\System\Language::PT_BR . ' and ' . \Inspire\Core\System\Language::EN_US);
+        }
+        self::$lang = $lang;
+    }
+
+    /**
+     * Get current schema loader
+     *
+     * @return SchemaLoader|NULL
+     */
+    public static function getLoader(): ?SchemaLoader
+    {
+        return self::$loader;
+    }
+
+    /**
+     * Set a schema loader
+     *
+     * @param SchemaLoader $loader
+     */
+    public static function setLoader(SchemaLoader $loader)
+    {
+        self::$loader = $loader;
+    }
+
+    /**
+     * Get current schema resolver
+     *
+     * @return SchemaResolver|NULL
+     */
+    public static function getResolver(): ?SchemaResolver
+    {
+        return self::$resolver;
+    }
+
+    /**
+     * Set current schema resolver
+     *
+     * @param SchemaResolver $resolver
+     */
+    public static function setResolver(SchemaResolver $resolver)
+    {
+        self::$resolver = $resolver;
     }
 }
 

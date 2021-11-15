@@ -2,6 +2,8 @@
 declare(strict_types = 1);
 namespace Inspire\Core\System;
 
+use Inspire\Core\Utils\Arrays;
+
 /**
  * Description of Message
  *
@@ -166,11 +168,15 @@ abstract class Message
     /**
      * Get extra data
      *
-     * @return array|NULL
+     * @param string $index
+     * @return array|NULL|mixed|array[]
      */
-    public function getExtra(): ?array
+    public function getExtra(?string $index = null)
     {
-        return $this->extra;
+        if ($index === null) {
+            return $this->extra;
+        }
+        return Arrays::get($this->extra, $index, null);
     }
 
     /**
@@ -181,6 +187,18 @@ abstract class Message
     public function setExtra(array $extra)
     {
         $this->extra = $extra;
+    }
+
+    /**
+     * Set extra data
+     *
+     * @param array $extra
+     */
+    public function addExtra(array $extra)
+    {
+        foreach ($extra as $k => $v) {
+            $this->extra[$k] = $v;
+        }
     }
 
     /**
