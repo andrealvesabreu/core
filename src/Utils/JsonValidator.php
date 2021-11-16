@@ -406,5 +406,3 @@ class JsonValidator
         self::$resolver = $resolver;
     }
 }
-
-
