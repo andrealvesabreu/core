@@ -40,6 +40,20 @@ class JsonValidator
     private static ?SchemaResolver $resolver = null;
 
     /**
+     * Registered errors
+     *
+     * @var array
+     */
+    private static ?ValidationError $errors = null;
+
+    /**
+     * Max erros to report
+     *
+     * @var int
+     */
+    private static int $maxErrors = 5;
+
+    /**
      *
      * @var array
      */
@@ -73,13 +87,6 @@ class JsonValidator
             'oneOf' => "The field '?' does not match any of the available schemes."
         ]
     ];
-
-    /**
-     * Registered errors
-     *
-     * @var array
-     */
-    private static ?ValidationError $errors = null;
 
     /**
      * Validate JSON string using a JSON schema
@@ -119,7 +126,25 @@ class JsonValidator
              * Apply JSON schema
              */
             $validator = new \Opis\JsonSchema\Validator();
-            $validator->setMaxErrors(5);
+            /**
+             * Set max errors for reporting
+             */
+            $validator->setMaxErrors(self::$maxErrors);
+            /**
+             * Set loader
+             */
+            if (self::$loader !== null) {
+                $validator->setLoader(self::$loader);
+            }
+            /**
+             * Set resolver
+             */
+            if (self::$resolver !== null) {
+                $validator->setResolver(self::$resolver);
+            }
+            /**
+             * Check data with json schema
+             */
             self::$errors = $validator->dataValidation($vdata, $vschema);
             return ! self::hasErrors();
         } catch (Exception $ex) {
@@ -318,6 +343,27 @@ class JsonValidator
             throw new \Exception("There are only two languages available for JsonValidator: " . \Inspire\Core\System\Language::PT_BR . ' and ' . \Inspire\Core\System\Language::EN_US);
         }
         self::$lang = $lang;
+    }
+
+    /**
+     * Get max errors reporting
+     *
+     * @return int
+     */
+    public static function getMaxErrors(): int
+    {
+        return self::$maxErrors;
+    }
+
+    /**
+     * Set max errors for error reporting
+     *
+     * @param string $lang
+     * @throws \Exception
+     */
+    public static function setMaxErrors(int $max)
+    {
+        self::$maxErrors = $max;
     }
 
     /**
