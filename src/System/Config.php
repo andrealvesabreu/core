@@ -136,6 +136,12 @@ class Config
         }
     }
 
+    /**
+     * Check if configurations loaded are valid
+     *
+     * @param string $path
+     * @return bool
+     */
     public static function checkConfigurationFolder(string $path): bool
     {
         try {
