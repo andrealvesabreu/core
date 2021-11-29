@@ -48,9 +48,9 @@ class Scheduler
     /**
      * A function to update process list
      *
-     * @var Callable
+     * @var mixed
      */
-    private static ?Callable $update_callback = null;
+    private static $update_callback = null;
 
     /**
      * Argument list to use in each process

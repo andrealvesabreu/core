@@ -27,9 +27,9 @@ class Arguments
     /**
      * Command ID to process manager
      *
-     * @var int
+     * @var string
      */
-    private ?int $cmd_id = null;
+    private ?string $cmd_id = null;
 
     /**
      * Constructor

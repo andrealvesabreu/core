@@ -20,16 +20,16 @@ class Process
     /**
      * Last timestamp when process started
      *
-     * @var string
+     * @var int
      */
-    private ?string $last_start_at = null;
+    private ?int $last_start_at = null;
 
     /**
      * Command line to execute
      *
-     * @var string
+     * @var Arguments
      */
-    private ?string $command = null;
+    private ?Arguments $command = null;
 
     /**
      * Constructor Receive a instance of Arguments
