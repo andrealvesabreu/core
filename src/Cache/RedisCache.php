@@ -78,5 +78,14 @@ final class RedisCache extends RedisCachePool
             return $this->cache->lPop($name, $count);
         }
     }
+
+    /**
+     *
+     * {@inheritdoc}
+     */
+    protected function getConnection()
+    {
+        return $this->cache;
+    }
 }
 
