@@ -97,11 +97,11 @@ abstract class Message
     public function getMessage(bool $asArray = true)
     {
         switch ($this->type) {
-            case Message::SYSTEM_MESSAGE:
+            case Message::TYPE_SYSTEM:
                 return SystemMessage::get($this, $asArray);
-            case Message::HTTP_MESSAGE:
+            case Message::TYPE_HTTP:
                 return HttpMessage::get($this, $asArray);
-            case Message::SYSTEM_MESSAGE:
+            case Message::TYPE_SYSTEM:
                 return ExceptionMessage::get($this, $asArray);
             default:
                 return new \RuntimeException("Unespected message type: {$this->type}");
