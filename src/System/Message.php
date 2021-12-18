@@ -160,7 +160,7 @@ abstract class Message
      *
      * @return string|NULL
      */
-    public function __toString(): ?string
+    public function __toString(): string
     {
         return $this->message;
     }
