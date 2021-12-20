@@ -9,6 +9,10 @@ use Opis\JsonSchema\Errors\ {
 };
 use Opis\JsonSchema\Resolvers\SchemaResolver;
 use Opis\JsonSchema\SchemaLoader;
+use Inspire\Core\System\ {
+    SystemMessage,
+    Message
+};
 
 /**
  * Description of JsonValidator
@@ -45,6 +49,20 @@ class JsonValidator
      * @var array
      */
     private static ?ValidationError $errors = null;
+
+    /**
+     * List of errors in human readable format
+     *
+     * @var array
+     */
+    private static array $readableErrors = [];
+
+    /**
+     * List of errors with SystemMessage
+     *
+     * @var array
+     */
+    private static array $systemErrors = [];
 
     /**
      * Max erros to report
@@ -146,6 +164,9 @@ class JsonValidator
              * Check data with json schema
              */
             self::$errors = $validator->dataValidation($vdata, $vschema);
+            if (self::hasErrors()) {
+                self::parseErrors();
+            }
             return ! self::hasErrors();
         } catch (Exception $ex) {
             return false;
@@ -163,17 +184,49 @@ class JsonValidator
     }
 
     /**
+     * Returns errors as validator fills
+     *
+     * @return array|null
+     */
+    public static function getErrors(): ?array
+    {
+        return is_array(self::$errors) && ! empty(self::$errors) ? self::$errors : null;
+    }
+
+    /**
+     * Return readable errors
+     *
+     * @return array|NULL
+     */
+    public static function getReadableErrors(): ?array
+    {
+        return is_array(self::$readableErrors) && ! empty(self::$readableErrors) ? self::$readableErrors : null;
+    }
+
+    /**
+     * Return system errors
+     *
+     * @return array|NULL
+     */
+    public static function getSystemErrors(): ?array
+    {
+        return is_array(self::$systemErrors) && ! empty(self::$systemErrors) ? self::$systemErrors : null;
+    }
+
+    /**
      * Return parsed error list
      *
      * @param array $errorList
      * @return array
      */
-    public static function getReadableErrors(?ValidationError $errorList = null): ?array
+    private static function parseErrors(?ValidationError $errorList = null)
     {
         $error = self::$errors;
         $formatter = new ErrorFormatter();
 
         $custom = function (ValidationError $error) use ($formatter) {
+            $fieldMessage = null;
+            $errMessage = null;
             switch ($error->keyword()) {
                 /**
                  * Array limitations
@@ -181,8 +234,9 @@ class JsonValidator
                 case 'minItems':
                 case 'maxItems':
                     $values = array_values($error->args());
-                    array_unshift($values, implode('->', $error->data()->fullPath()));
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    array_unshift($values, $fieldMessage);
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/",
                         "/\?/"
@@ -190,14 +244,16 @@ class JsonValidator
                     $values, //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * String size limitations
                  */
                 case 'minLength':
                 case 'maxLength':
                     $values = array_values($error->args());
-                    array_unshift($values, implode('->', $error->data()->fullPath()));
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    array_unshift($values, $fieldMessage);
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/",
                         "/\?/"
@@ -205,44 +261,51 @@ class JsonValidator
                     $values, //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * String format error
                  */
                 case 'format':
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/"
                     ], //
                     [
-                        implode('->', $error->data()->fullPath()),
+                        $fieldMessage,
                         $error->args()[$error->keyword()]
                     ], //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * Number limitations
                  */
                 case 'minimum':
                 case 'maximum':
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/",
                         "/\?/"
                     ], //
                     [
-                        implode('->', $error->data()->fullPath()),
+                        $fieldMessage,
                         $error->args()[substr($error->keyword(), 0, 3)],
                         $error->data()->value()
                     ], //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * Missing required fields
                  */
                 case 'required':
-                    return str_replace('?', //
-                    ltrim(implode('->', $error->data()->fullPath()) . '->' . implode('->', $error->args()['missing']), '->'), //
+                    $fieldMessage = ltrim(implode('->', $error->data()->fullPath()) . '->' . implode('->', $error->args()['missing']), '->');
+                    $errMessage = str_replace('?', //
+                    $fieldMessage, //
                     self::$readable_messages[self::$lang]['required']);
+                    break;
                 /**
                  * Type errors
                  */
@@ -251,74 +314,85 @@ class JsonValidator
                     if (is_array($info['expected'])) {
                         $info['expected'] = implode(', ', $info['expected']);
                     }
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/",
                         "/\?/"
                     ], //
                     array_merge([
-                        implode('->', $error->data()->fullPath())
+                        $fieldMessage
                     ], $info), //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * Error pattern matches
                  */
                 case 'pattern':
-                    return preg_replace([
+                    print_r($error->args());
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/"
                     ], //
                     [
-                        implode('->', $error->data()->fullPath()),
+                        $fieldMessage,
                         $error->args()['pattern']
                     ], //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * Enumeration errors
                  */
                 case 'enum':
+                    $fieldMessage = implode('->', $error->data()->fullPath());
                     $schema = $error->schema()->info();
-                    return preg_replace([
+                    $errMessage = preg_replace([
                         "/\?/",
                         "/\?/"
                     ], //
                     [
-                        implode('->', $error->data()->fullPath()),
+                        $fieldMessage,
                         '[' . implode(',', $schema->data()->enum) . ']'
                     ], //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
                 /**
                  * Enumeration errors
                  */
                 case 'oneOf':
                     $schema = $error->schema()->info();
-                    return preg_replace([
+                    $fieldMessage = implode('->', $error->data()->fullPath());
+                    $errMessage = preg_replace([
                         "/\?/"
                     ], //
                     [
-                        implode('->', $error->data()->fullPath())
+                        $fieldMessage
                     ], //
                     self::$readable_messages[self::$lang][$error->keyword()], //
                     1);
+                    break;
+            }
+            if ($errMessage !== null) {
+                $sysErr = new SystemMessage($errMessage, //
+                $error->keyword(), //
+                1, //
+                false);
+                $sysErr->setExtra([
+                    'field' => $fieldMessage,
+                    'rule' => $error->keyword()
+                ]);
+                self::$systemErrors[] = $sysErr;
+                return $errMessage;
             }
             return $error->message();
         };
         // $print($formatter->format($error, true, $custom, $custom_key));
         // print_r(array_values($formatter->format($error, false, $custom)));
-        return array_values($formatter->format($error, false, $custom));
-    }
-
-    /**
-     * Returns errors as validator fills
-     *
-     * @return array|null
-     */
-    public static function getErrors(): ?array
-    {
-        return is_array(self::$errors) && ! empty(self::$errors) ? self::$errors : null;
+        self::$readableErrors = array_values($formatter->format($error, false, $custom));
     }
 
     /**
