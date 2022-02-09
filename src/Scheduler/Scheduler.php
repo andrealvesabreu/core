@@ -112,7 +112,7 @@ class Scheduler
             /**
              * If process ID not exists, start it
              */
-            if (! \Inspire\Core\Utils\Arrays::exists(self::$processes, $args->getCmdId())) {
+            if (! \Inspire\Support\Arrays::exists(self::$processes, $args->getCmdId())) {
                 self::$processes[$args->getCmdId()] = new Process($args);
                 self::$last_run_at[$args->getCmdId()] = 0;
             }

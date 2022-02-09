@@ -23,7 +23,7 @@ abstract class CacheFactory
      */
     public static function create(?string $channel = null): ?AbstractCachePool
     {
-        if (($cache = \Inspire\Core\System\Config::get("cache")) !== null) {
+        if (($cache = \Inspire\Support\Config::get("cache")) !== null) {
             $channel = $channel === 'default' ? null : $channel;
             if (isset($cache[$channel]) && isset($cache[$channel]['driver'])) {
                 $config = $cache[$channel];

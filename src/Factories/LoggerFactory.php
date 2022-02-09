@@ -22,7 +22,7 @@ final class LoggerFactory
      */
     public static function create(string $level, ?string $channel = null): ?Logger
     {
-        if (($logs = \Inspire\Core\System\Config::get("log")) !== null) {
+        if (($logs = \Inspire\Support\Config::get("log")) !== null) {
             /**
              * Filter only configuratons applyable to this channel
              */

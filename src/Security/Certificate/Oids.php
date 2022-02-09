@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Inspire\Core\Security\Certificate;
 
-use Inspire\Core\Utils\Arrays;
+use Inspire\Support\Arrays;
 
 /**
  * Class to obtain the list of OID Object Identifier of encrypted data

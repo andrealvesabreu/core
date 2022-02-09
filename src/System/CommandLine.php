@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace Inspire\Core\System;
 
-use Inspire\Core\Utils\Arrays;
+use Inspire\Support\Arrays;
 
 /**
  * CommandLine class
