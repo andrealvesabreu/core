@@ -1,12 +1,14 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
+// Copyright (c) 2022 André Alves
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 namespace Inspire\Core\Scheduler;
 
-/**
- * Description of Scheduler
- *
- * @author aalves
- */
 class Scheduler
 {
 
@@ -143,7 +145,6 @@ class Scheduler
             if ($total_process > 0) {
                 $min_time = time() - self::$min_interval; // 5 minutos
                 foreach (self::$index as $idx => $d_index) {
-                    // echo "CHECK {$d_index->getCmdId()}\n";
                     if (! isset(self::$running[$d_index->getCmdId()]) && // If it isn't running
                     self::$last_run_at[$d_index->getCmdId()] < $min_time) { // And if time between last execution to then was elapsed
                                                                             // echo "START {$d_index->getCmdId()}\n";

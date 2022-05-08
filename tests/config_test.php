@@ -1,65 +1,81 @@
 <?php
-use Inspire\Core\Logger\Log;
-use Psr\Log\LogLevel;
-use Inspire\Core\Factories\FactoryLogger;
-use Inspire\Core\Cache\Cache;
+
+use Inspire\Core\Fs\File;
 
 define('APP_NAME', 'test');
 include dirname(__DIR__) . '/vendor/autoload.php';
-// Load all files from foler
-echo Inspire\Core\System\Config::loadFromFolder('config') . PHP_EOL;
-// print_r(Inspire\Core\System\Config::get());
-// Load a single file
-echo Inspire\Core\System\Config::loadFromFile('config/s3.php') . PHP_EOL;
-// print_r(Inspire\Core\System\Config::get());
-/**
- * Validate an array configuration
- */
-Inspire\Core\System\Config::checkConfiguration([
-    "type" => "s3",
-    "config" => [
-        [
-            'name' => 'first',
-            'credentials' => [
-                'key' => 'your-keyyour-keyyour-keyyour-key',
-                'secret' => 'your-secretyour-secretyour-secretyour-secretyour-secretyour-secretyour-secret'
-            ],
-            'region' => 'us-east-1',
-            'version' => 'latest'
-        ],
-        [
-            'name' => 'second',
-            'credentials' => [
-                'key' => 'your-keyyour-keyyour-keyyour-keyyour',
-                'secret' => 'your-secretyour-secretyour-secretyour-secretyour-secretyour-secretyour-secret'
-            ],
-            'region' => 'sa-east-1',
-            'version' => 'latest'
-        ]
-    ]
-]);
-/**
- * Validate all file in folder configuration
- */
-Inspire\Core\System\Config::checkConfigurationFolder('config');
-var_dump(Inspire\Core\System\Config::get('cache.cache4.driver'));
-var_dump(Inspire\Core\System\Config::get('cache.i18n.host'));
-var_dump(Inspire\Core\System\Config::get('cache.i18n'));
-var_dump(Inspire\Core\System\Config::get('jwt.first.exp'));
-var_dump(Inspire\Core\System\Config::get('log.warnapp.filename'));
-var_dump(Inspire\Core\System\Config::get('s3.second.credentials.secret'));
-var_dump(Inspire\Core\System\Config::get('filesystem.sftp3.root'));
-var_dump(Inspire\Core\System\Config::get('filesystem.sftp3.mod.file.public'));
-var_dump(Inspire\Core\System\Config::get('queue.track.driver'));
-var_dump(Inspire\Core\System\Config::get('queue.track.vhost'));
-var_dump(Inspire\Core\System\Config::get('database.mysqltest.collation'));
-var_dump(Inspire\Core\System\Config::get('database.pgtestconfig.user'));
-// FactoryLogger::create('info', APP_NAME);
-Log::info("Test info");
-Log::on(APP_NAME)->info("Test info channel " . APP_NAME);
-Log::on(APP_NAME)->info('Test', 'multi', 'info', 'channel', APP_NAME)->error('multi', 'error', 'too');
-// Log::warning("Test warning");
+echo Inspire\Config\Config::loadFromFile('config/filesystem.php') . PHP_EOL;
 
-Cache::on('cache6')->set('deco', '123456', 60);
-echo Cache::on('cache6')->get('deco') . PHP_EOL;
+// localTest();
+// ftpTest();
+// sftpTest();
+// s3Test();
 
+function localTest()
+{
+    echo "On named intance call\n";
+    var_dump(File::on('localfs')->mkdir('test'));
+    File::on('localfs')->put('local_test.txt', 'i wanna go');
+    var_dump(File::on('localfs')->get('local_test.txt'));
+    File::on('localfs')->copy('local_test.txt', 'localtest2.txt');
+    File::on('localfs')->move('localtest2.txt', 'localtest2slme.txt');
+    File::on('localfs')->delete('local_test.txt');
+    var_dump(File::on('localfs')->get('localtest2slme.txt'));
+    var_dump(File::on('localfs')->list());
+
+    echo "\n\nWith manually confguration\n";
+    var_dump(File::with('manual', [
+        'adapter' => 'local',
+        'root' => 'logs/'
+    ])->set('local_test_with.txt', 'setting data to file statically'));
+    var_dump(File::set('local_test_with.txt', 'Data will not be overwrited statically'));
+    var_dump(File::get('local_test_with.txt'));
+    var_dump(File::put('local_test_with.txt', 'replacing data statically'));
+    var_dump(File::get('local_test_with.txt'));
+}
+
+function ftpTest()
+{
+    echo "\n\n\n\n\n\n\n\n\nFTP\n";
+    var_dump(File::on('ftpsystem')->mkdir('test'));
+    File::on('ftpsystem')->chdir('test');
+    var_dump(File::on('ftpsystem')->set('ftp_test.txt', 'setting data to file statically'));
+    File::on('ftpsystem')->copy('ftp_test.txt', 'ftp_test2.txt');
+    File::on('ftpsystem')->move('ftp_test2.txt', 'ftp_test2_a.txt');
+    File::on('ftpsystem')->delete('ftp_test.txt');
+    var_dump(File::on('ftpsystem')->get('ftp_test2_a.txt'));
+    var_dump(File::on('ftpsystem')->list());
+    File::on('ftpsystem')->chdir('/');
+    var_dump(File::on('ftpsystem')->list());
+}
+
+function sftpTest()
+{
+    echo "\n\n\n\n\n\n\n\n\nSFTP\n";
+    var_dump(File::on('sftpsystem')->mkdir('test'));
+    File::on('sftpsystem')->chdir('test');
+    var_dump(File::on('sftpsystem')->set('ftp_test.txt', 'setting data to file statically'));
+    File::on('sftpsystem')->copy('ftp_test.txt', 'ftp_test2.txt');
+    File::on('sftpsystem')->delete('ftp_test2_a.txt');
+    File::on('sftpsystem')->move('ftp_test2.txt', 'ftp_test2_a.txt');
+    File::on('sftpsystem')->delete('ftp_test.txt');
+    var_dump(File::on('sftpsystem')->get('ftp_test2_a.txt'));
+    var_dump(File::on('sftpsystem')->list());
+    File::on('sftpsystem')->chdir('/');
+    var_dump(File::on('sftpsystem')->list());
+}
+
+function s3Test()
+{
+    echo "\n\n\n\n\n\n\n\n\nAWS S3\n";
+    var_dump(File::on('aws')->mkdir('test'));
+    var_dump(File::on('aws')->chdir('test'));
+    var_dump(File::on('aws')->set('aws_test.txt', 'setting data to file statically'));
+    File::on('aws')->copy('aws_test.txt', 'aws_test2.txt');
+    File::on('aws')->move('aws_test2.txt', 'aws_test2_a.txt');
+    File::on('aws')->delete('aws_test.txt');
+    var_dump(File::on('aws')->get('aws_test2_a.txt'));
+    var_dump(File::on('aws')->list());
+    File::on('aws')->chdir('/');
+    var_dump(File::on('aws')->list());
+}

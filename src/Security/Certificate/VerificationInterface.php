@@ -1,12 +1,14 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
+// Copyright (c) 2022 André Alves
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 namespace Inspire\Core\Security\Certificate;
 
-/**
- * Description of VerificationInterface
- *
- * @author aalves
- */
 interface VerificationInterface
 {
 
@@ -14,7 +16,7 @@ interface VerificationInterface
 
     const SIGNATURE_INCORRECT = 0;
 
-    const SIGNATURE_ERROR = - 1;
+    const SIGNATURE_ERROR = -1;
 
     /**
      * Verify signature

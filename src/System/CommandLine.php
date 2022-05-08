@@ -1,5 +1,12 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
+// Copyright (c) 2022 André Alves
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 namespace Inspire\Core\System;
 
 use Inspire\Support\Arrays;
@@ -17,7 +24,7 @@ use Inspire\Support\Arrays;
 class CommandLine
 {
 
-    public static $args;
+    private static $args;
 
     /**
      * PARSE ARGUMENTS
@@ -98,7 +105,7 @@ class CommandLine
     /**
      * GET BOOLEAN
      */
-    public static function getBoolean($key, $default = false)
+    private static function getBoolean($key, $default = false)
     {
         if (! isset(self::$args[$key])) {
             return $default;
@@ -178,7 +185,11 @@ class CommandLine
             if (is_array($v)) {
                 $v = implode(',', $v);
             }
-            $output[] = "{$k}={$v}";
+            if (strpos($v, ' ') !== false) {                
+                $output[] = "{$k}='" . trim(str_replace('\'', '\\\'', $v), '\'').'\'';
+            } else {
+                $output[] = "{$k}=" . str_replace('\'', '\\\'', $v);
+            }
         }
         return empty($output) ? '' : implode(' ', $output);
     }

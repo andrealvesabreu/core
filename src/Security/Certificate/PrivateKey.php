@@ -1,14 +1,15 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
+// Copyright (c) 2022 André Alves
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 namespace Inspire\Core\Security\Certificate;
 
 use Inspire\Core\Security\Exceptions\CertificateException;
-
-/**
- * Description of PrivateKey
- *
- * @author aalves
- */
 
 /**
  * Class for management and use of digital certificates A1 (PKCS # 12)
@@ -62,7 +63,7 @@ class PrivateKey implements SignatureInterface
      */
     protected function read()
     {
-        if (! $resource = openssl_pkey_get_private($this->rawKey)) {
+        if (!$resource = openssl_pkey_get_private($this->rawKey)) {
             throw CertificateException::getPrivateKey();
         }
         $this->details = openssl_pkey_get_details($resource);
@@ -76,7 +77,7 @@ class PrivateKey implements SignatureInterface
     public function sign($content, $algorithm = OPENSSL_ALGO_SHA1)
     {
         $encryptedData = '';
-        if (! openssl_sign($content, $encryptedData, $this->resource, $algorithm)) {
+        if (!openssl_sign($content, $encryptedData, $this->resource, $algorithm)) {
             throw CertificateException::signContent();
         }
         return $encryptedData;
