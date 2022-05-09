@@ -1,12 +1,14 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
+
+// Copyright (c) 2022 André Alves
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 namespace Inspire\Core\Scheduler;
 
-/**
- * Description of Process
- *
- * @author aalves
- */
 class Process
 {
 
@@ -66,7 +68,7 @@ class Process
      *
      * @return string
      */
-    public function getCommand(): string
+    public function getCommand(): ?Arguments
     {
         return $this->command;
     }
@@ -103,7 +105,7 @@ class Process
     {
         $op = [];
         exec("ps -p {$this->pid}", $op);
-        if (! isset($op[1])) {
+        if (!isset($op[1])) {
             return false;
         }
         return true;
