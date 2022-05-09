@@ -18,4 +18,3 @@ class Language
 
     const ES_ES = 'es_ES';
 }
-
