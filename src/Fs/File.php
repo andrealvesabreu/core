@@ -45,7 +45,7 @@ final class File
              * If this is first handler, allow to use it as default
              */
             if ($first) {
-                self::$handlers['default'] = self::$handlers[$handlerName];
+                self::$handlers['default'] = &self::$handlers[$handlerName];
             }
             return self::$handlers[$handlerName];
         } else {
