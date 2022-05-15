@@ -32,6 +32,10 @@ class BaseFs implements FsInterface
 
     /**
      * Get a file contents
+     * 
+     * @param string $path
+     * 
+     * @return string|null
      */
     public function get(string $path): ?string
     {
@@ -39,7 +43,12 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Set contents to file
+     * 
+     * @param string $path
+     * @param string $contents
+     * 
+     * @return bool|null
      */
     public function set(string $path, string $contents): ?bool
     {
@@ -52,7 +61,12 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Put contents to file
+     * 
+     * @param string $path
+     * @param string $contents
+     * 
+     * @return bool|null
      */
     public function put(string $path, string $contents): ?bool
     {
@@ -61,7 +75,12 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Create a copy of one file
+     * 
+     * @param string $source
+     * @param string $destination
+     * 
+     * @return [type]
      */
     public function copy(string $source, string $destination)
     {
@@ -72,7 +91,12 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Move a file to another name/address
+     *
+     * @param string $source
+     * @param string $destination
+     * 
+     * @return [type]
      */
     public function move(string $source, string $destination)
     {
@@ -83,7 +107,11 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Delete one file
+     * 
+     * @param string $path
+     * 
+     * @return [type]
      */
     public function delete(string $path)
     {
@@ -91,7 +119,31 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Get a file contents
+     * Delete one directory
+     * 
+     * @param string $path
+     * 
+     * @return [type]
+     */
+    public function deleteDirectory(string $path)
+    {
+        $this->filesystem->deleteDirectory($this->relativeToRoot($path));
+    }
+
+    // /**
+    //  * Get mime type of one file. Not implemented in CurlFtpAdapter
+    //  */
+    // public function mimeType(string $path)
+    // {
+    //     $this->filesystem->mimeType($this->relativeToRoot($path));
+    // }
+
+    /**
+     * List files and folders
+     * 
+     * @param string|null $path
+     * 
+     * @return array|null
      */
     public function list(?string $path = null): ?array
     {
@@ -124,7 +176,11 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Change directory
+     * Change current directory
+     * 
+     * @param string $path
+     * 
+     * @return [type]
      */
     public function chdir(string $path)
     {
@@ -136,7 +192,8 @@ class BaseFs implements FsInterface
     }
 
     /**
-     * Change directory
+     * Create directory
+     * 
      * @param string $path
      * 
      * @return bool|null
@@ -152,6 +209,10 @@ class BaseFs implements FsInterface
 
     /**
      * Translate an argument path to relative path from root
+     * 
+     * @param string $path
+     * 
+     * @return string
      */
     protected function relativeToRoot(string $path): string
     {

@@ -1,36 +1,38 @@
 {
-	"autoload" : {
-		"psr-4" : {
-			"Inspire\\Core\\" : "src"
+	"autoload": {
+		"psr-4": {
+			"Inspire\\Core\\": "src"
 		}
 	},
-	"name" : "inspire/core",
-	"type" : "library",
-	"description" : "Core to common PHP API",
-	"license" : "MIT",
-	"require" : {
+	"name": "inspire/core",
+	"type": "library",
+	"description": "Core to common PHP API",
+	"license": "MIT",
+	"require": {
 		"php": ">=7.4",
 		"ext-json": "*",
-		"cache/array-adapter": "~1.1",
-		"cache/memcached-adapter": "~1.1",
-		"cache/redis-adapter": "~1.1",
-		"illuminate/support": "~8.82",
-		"inspire/support": "^0.1.0",
-		"monolog/monolog": "~2.3",
-		"neitanod/forceutf8": "^2.0",
-		"nette/utils": "^3.2",
-		"opis/json-schema": "~2.2",
-		"phpseclib/phpseclib": "~3.0",
-		"voku/portable-ascii": "~1.5"
+		"inspire/config": "0.1.0",
+		"league/flysystem": "^3.0",
+		"monolog/monolog": "2.5.0",
+		"neitanod/forceutf8": "2.0",
+		"nette/utils": "3.2.7",
+		"phpseclib/phpseclib": "3.0.14",
+		"voku/portable-ascii": "1.6.1"
 	},
-	"authors" : [{
-			"name" : "André Alves",
-			"email" : "aluisalves0@gmail.com",
-			"role" : "Developer"
+	"authors": [
+		{
+			"name": "André Alves",
+			"email": "aluisalves0@gmail.com",
+			"role": "Developer"
 		}
 	],
-	"config" : {
-		"process-timeout" : 30,
-		"sort-packages" : true
+	"config": {
+		"process-timeout": 30,
+		"sort-packages": true
+	},
+	"suggest": {
+		"league/flysystem-ftp": "^3.0.0",
+		"league/flysystem-sftp-v3": "^3.0.0",
+		"league/flysystem-aws-s3-v3": "^3.0.0"
 	}
 }

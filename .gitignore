@@ -1,7 +1,9 @@
-config/*
+/tests/config/*
+/tests/logs/*
 configure.php
 /vendor/
 /.settings/
 .buildpath
 .project
 composer.phar
+/.history/

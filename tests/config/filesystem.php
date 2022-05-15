@@ -29,7 +29,13 @@ return [
             // 'systemType' => null, // 'windows' or 'unix'
             // 'ignorePassiveAddress' => null, // true or false
             // 'timestampsOnUnixListingsEnabled' => false, // true or false
-            // 'recurseManually' => true // true            
+            // 'recurseManually' => true, // true            
+            // 'proxy' => [
+            //     'username' => null, // required
+            //     'password' => null, // required
+            //     'host' => null, // required
+            //     'port' => null
+            // ]
         ],
         [
             'name' => 'sftpsystem',

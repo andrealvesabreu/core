@@ -18,6 +18,7 @@ namespace Inspire\Core\Fs;
  * @method static string copy(string $source, string $destination)
  * @method static string move(string $source, string $destination)
  * @method static string delete(string $path)
+ * @method static string deleteDirectory(string $path)
  * @method static string list(string $path)
  */
 final class File

@@ -16,10 +16,7 @@ use League\Flysystem\AwsS3V3\{
     AwsS3V3Adapter,
     PortableVisibilityConverter
 };
-use League\Flysystem\{
-    Filesystem,
-    Visibility
-};
+use League\Flysystem\Filesystem;
 
 class S3 extends BaseFs
 {

@@ -1,4 +1,6 @@
 <?php
+ini_set("display_errors", true);
+error_reporting(E_ALL);
 
 use Inspire\Core\Fs\File;
 
@@ -8,6 +10,7 @@ echo Inspire\Config\Config::loadFromFile('config/filesystem.php') . PHP_EOL;
 
 // localTest();
 // ftpTest();
+ftpTestCurl();
 // sftpTest();
 // s3Test();
 
@@ -44,6 +47,29 @@ function ftpTest()
     File::on('ftpsystem')->move('ftp_test2.txt', 'ftp_test2_a.txt');
     File::on('ftpsystem')->delete('ftp_test.txt');
     var_dump(File::on('ftpsystem')->get('ftp_test2_a.txt'));
+    var_dump(File::on('ftpsystem')->list());
+    File::on('ftpsystem')->chdir('/');
+    var_dump(File::on('ftpsystem')->list());
+}
+function ftpTestCurl()
+{
+    echo "\n\n\n\n\n\n\n\n\nCURL FTP\n";
+    var_dump(File::on('ftpsystem')->mkdir('teste'));
+    var_dump(File::on('ftpsystem')->mkdir('teste2'));
+    var_dump(File::on('ftpsystem')->list());
+    File::on('ftpsystem')->chdir('teste');
+    var_dump(File::on('ftpsystem')->list());
+    var_dump(File::on('ftpsystem')->set('ftp_test.txt', 'setting data to file statically not'));
+    var_dump(File::on('ftpsystem')->put('ftp_test.txt', 'setting data to file statically again'));
+    File::on('ftpsystem')->copy('ftp_test.txt', 'ftp_test2.txt');
+    File::on('ftpsystem')->move('ftp_test2.txt', 'ftp_test2_a.txt');
+    File::on('ftpsystem')->chdir('../teste2');
+    var_dump(File::on('ftpsystem')->put('ftp_test2.txt', 'Gooooooooo'));
+    File::on('ftpsystem')->chdir('../teste');
+    var_dump(File::on('ftpsystem')->get('ftp_test2_a.txt'));
+    File::on('ftpsystem')->delete('../teste2/ftp_test2.txt');
+    File::on('ftpsystem')->deleteDirectory('../teste2');
+    var_dump(File::on('ftpsystem')->set('ftp_test.txt', 'setting data to file statically'));
     var_dump(File::on('ftpsystem')->list());
     File::on('ftpsystem')->chdir('/');
     var_dump(File::on('ftpsystem')->list());
