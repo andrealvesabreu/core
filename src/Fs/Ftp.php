@@ -19,6 +19,12 @@ use \League\Flysystem\{
 
 class Ftp extends BaseFs
 {
+
+    /**
+     * @var FtpAdapter|null|null
+     */
+    private ?FtpAdapter $adapter = null;
+
     /**
      * Initialize filesystem adapter
      */
@@ -28,13 +34,13 @@ class Ftp extends BaseFs
          * If there's no proxy settings, use common FTP Adapter of Flysystem
          */
         if (!isset($settings['proxy'])) {
-            $this->filesystem = new Filesystem(
-                new FtpAdapter(
-                    FtpConnectionOptions::fromArray($settings),
-                    new FtpConnectionProvider(),
-                    new NoopCommandConnectivityChecker()
-                )
+            $this->adapter = new FtpAdapter(
+                FtpConnectionOptions::fromArray($settings),
+                new FtpConnectionProvider(),
+                new NoopCommandConnectivityChecker(),
+                new \League\Flysystem\UnixVisibility\PortableVisibilityConverter()
             );
+            $this->filesystem = new Filesystem($this->adapter);
         } else {
             /**
              * Use custom CurlFtpAdapter

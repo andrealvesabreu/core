@@ -9,7 +9,7 @@ include dirname(__DIR__) . '/vendor/autoload.php';
 echo Inspire\Config\Config::loadFromFile('config/filesystem.php') . PHP_EOL;
 
 // localTest();
-// ftpTest();
+ftpTest();
 ftpTestCurl();
 // sftpTest();
 // s3Test();
