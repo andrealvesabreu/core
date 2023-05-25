@@ -204,7 +204,31 @@ class BaseFs implements FsInterface
             'visibility' =>    'public',
             'directory_visibility' => 'public'
         ]);
+        return $this->directoryExists($path);
+    }
+
+    /**
+     * Check if direcoty exists
+     * 
+     * @param string $path
+     * 
+     * @return bool|null
+     */
+    public function directoryExists(string $path): ?bool
+    {
         return $this->filesystem->directoryExists($this->relativeToRoot($path));
+    }
+
+    /**
+     * Check if file exists
+     * 
+     * @param string $path
+     * 
+     * @return bool|null
+     */
+    public function fileExists(string $path): ?bool
+    {
+        return $this->filesystem->fileExists($this->relativeToRoot($path));
     }
 
     /**
