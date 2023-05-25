@@ -53,9 +53,9 @@ interface FsInterface
     /**
      * Check if file exists
      */
-    // public function fileExists(string $path): ?bool;
+    public function fileExists(string $path): ?bool;
     /**
      * Check if directory exists
      */
-    // public function directoryExists(string $path): ?bool;
+    public function directoryExists(string $path): ?bool;
 }
