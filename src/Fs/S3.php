@@ -26,9 +26,9 @@ class S3 extends BaseFs
     public function init(array $settings): bool
     {
         $client = new S3Client([
-            $settings['version'] ?? 'latest',
-            $settings['region'],
-            $settings['credentials']
+            'version' => $settings['version'] ?? 'latest',
+            'region' => $settings['region'],
+            'credentials' => $settings['credentials']
         ]);
         if (!isset($settings['bucket'])) {
             $adapter = new AwsS3V3Adapter(
