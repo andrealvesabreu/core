@@ -200,23 +200,11 @@ class BaseFs implements FsInterface
      */
     public function mkdir(string $path): ?bool
     {
-        if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
-            $previouDir = $this->currentPath;
-            $this->chdir('/');
-            $this->filesystem->createDirectory($this->relativeToRoot($path), [
-                'visibility' =>    'public',
-                'directory_visibility' => 'public'
-            ]);
-            $exists = $this->directoryExists($path);
-            $this->chdir($previouDir);
-        } else {
-            $this->filesystem->createDirectory($this->relativeToRoot($path), [
-                'visibility' =>    'public',
-                'directory_visibility' => 'public'
-            ]);
-            $exists = $this->directoryExists($path);
-        }
-        return $exists;
+        $this->filesystem->createDirectory($this->relativeToRoot($path), [
+            'visibility' =>    'public',
+            'directory_visibility' => 'public'
+        ]);
+        return $this->directoryExists($path);
     }
 
     /**
